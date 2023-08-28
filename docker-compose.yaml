@@ -17,9 +17,13 @@ services:
         condition: service_healthy
  db:
     image: mysql:8.0.30-debian
+    volumes:
+      - ./.docker/dbdata:/var/lib/mysql
     environment: 
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=keycloak  
+      - MYSQL_DATABASE=keycloak 
+    security_opt:
+      - seccomp:unconfined
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
